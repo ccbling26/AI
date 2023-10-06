@@ -72,3 +72,78 @@ Q 的目的是借助它从一堆信息中找到重要的信息
 
 当我们生成词时，通过已经生成的词和源语句做自注意力，确定源语句中哪些词对接下来的词的生成更有作用
 
+
+
+## Tokenizer 分词器
+
+> 将文本输入转化为模型可以接受的输入（数值型的输入）
+
+### 类别
+
+#### Word-based
+
+> 按照词进行分词
+
+分词方式
+
+- 根据空格
+- 根据标点符号
+
+每个单词被赋予一个 ID，范围为：0～vocabulary size
+
+不在 vocabulary 库里面的词，会分配 `UNK`，代表未知词
+
+缺点
+
+- 相近的词被分配完全不同的无关的 id
+
+
+
+#### Character-based
+
+> 按照字符进行分词
+
+优点
+
+- vocabulary size 很小
+- 很少机会会出现 out of vocabulary 问题
+
+缺点
+
+- 文本无意义
+- 每个模型都需要处理多个 token，模型速度慢，可以输入的文本长度变小
+
+
+
+#### Subword-based
+
+> 按照 subword进行分词
+
+原则
+
+- 常见词不应该分成 subword，不常见的词应该分为更有意义的 subword
+
+
+
+### load & save
+
+> 加载和保存 tokenizer 使用的模型结构以及字典
+
+load：`from_pretrained`
+
+save：`save_pretrained`
+
+
+
+### Encoding
+
+包含两个步骤
+
+- tokenization：调用 `tokenize` 函数，对文本进行分词
+- convert_tokens_to_ids：调用 `convert_tokens_to_ids` 函数，将分词后的 token 映射为数字
+
+
+
+### Decoding
+
+使用 `decode` 函数，将输出的 ids 转化为文本
